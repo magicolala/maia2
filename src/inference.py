@@ -1,5 +1,5 @@
-from maia2.utils import *
-from maia2.main import *
+from .utils import *
+from .main import *
 
 
 class TestDataset(torch.utils.data.Dataset):

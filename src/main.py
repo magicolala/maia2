@@ -5,7 +5,7 @@ from multiprocessing import Pool, cpu_count, Queue, Process
 import torch
 import tqdm
 import argparse
-from utils import *
+from .utils import *
 import torch.nn as nn
 import torch.nn.functional as F
 from tqdm.contrib.concurrent import process_map
