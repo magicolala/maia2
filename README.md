@@ -2,6 +2,10 @@
 
 TODO: include abstarct and link to paper
 
+## Requirements
+
+TODO: A list of packages and their versions
+
 ## Installation
 
 ```sh
