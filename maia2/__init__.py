@@ -1,3 +1,3 @@
 """An amazing sample package for maia2."""
 
-__version__ = "0.3"
+__version__ = "0.4"
