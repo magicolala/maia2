@@ -2,7 +2,7 @@ import gdown
 import os
 import pandas as pd
 
-def load_example_test_dataset(save_root = "../data"):
+def load_example_test_dataset(save_root = "./maia2_data"):
     
     url = "https://drive.google.com/uc?id=1fSu4Yp8uYj7xocbHAbjBP6DthsgiJy9X"
     if os.path.exists(save_root) == False:

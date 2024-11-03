@@ -7,7 +7,7 @@ from torch import nn
 import warnings
 warnings.filterwarnings("ignore")
 
-def from_pretrained(type, device, save_root = "../models"):
+def from_pretrained(type, device, save_root = "./maia2_models"):
     
     if os.path.exists(save_root) == False:
         os.makedirs(save_root)
