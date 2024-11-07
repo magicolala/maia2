@@ -42,13 +42,10 @@ class TestDataset(torch.utils.data.Dataset):
         
         return fen, board_input, elo_self, elo_oppo, legal_moves
 
-
 def get_preds(model, dataloader, all_moves_dict_reversed):
     
-    all_probs = []
-    predicted_move_probs = []
-    predicted_moves = []
-    predicted_win_probs = []
+    move_probs = []
+    win_probs = []
     
     device = next(model.parameters()).device
     
@@ -64,26 +61,39 @@ def get_preds(model, dataloader, all_moves_dict_reversed):
 
             logits_maia, _, logits_value = model(boards, elos_self, elos_oppo)
             logits_maia_legal = logits_maia * legal_moves
-            probs = logits_maia_legal.softmax(dim=-1)
-
-            all_probs.append(probs.cpu())
-            predicted_move_probs.append(probs.max(dim=-1).values.cpu())
-            predicted_move_indices = probs.argmax(dim=-1)
+            probs = logits_maia_legal.softmax(dim=-1).cpu().tolist()
+            
+            logits_value = (logits_value / 2 + 0.5).clamp(0, 1).cpu().tolist()
+        
             for i in range(len(fens)):
+                
                 fen = fens[i]
-                predicted_move = all_moves_dict_reversed[predicted_move_indices[i].item()]
-                if fen.split(' ')[1] == 'b':
-                    predicted_move = mirror_move(predicted_move)
-                predicted_moves.append(predicted_move)
-
-            predicted_win_probs.append((logits_value / 2 + 0.5).cpu())
-            predicted_win_probs = [min(max(0, x), 1) for x in predicted_win_probs]
+                black_flag = False
+                
+                # calculate win probability
+                logit_value = logits_value[i]
+                if fen.split(" ")[1] == "b":
+                    logit_value = 1 - logit_value
+                    black_flag = True
+                win_probs.append(round(logit_value, 4))
+                
+                # calculate move probabilities
+                move_probs_each = {}
+                legal_move_indices = legal_moves[i].nonzero().flatten().cpu().numpy().tolist()
+                legal_moves_mirrored = []
+                for move_idx in legal_move_indices:
+                    move = all_moves_dict_reversed[move_idx]
+                    if black_flag:
+                        move = mirror_move(move)
+                    legal_moves_mirrored.append(move)
+                
+                for j in range(len(legal_move_indices)):
+                    move_probs_each[legal_moves_mirrored[j]] = round(probs[i][legal_move_indices[j]], 4)
+                
+                move_probs_each = dict(sorted(move_probs_each.items(), key=lambda item: item[1], reverse=True))
+                move_probs.append(move_probs_each)
     
-    all_probs = torch.cat(all_probs).cpu().numpy()
-    predicted_move_probs = torch.cat(predicted_move_probs).numpy()
-    predicted_win_probs = torch.cat(predicted_win_probs).numpy()
-    
-    return all_probs, predicted_move_probs, predicted_moves, predicted_win_probs
+    return move_probs, win_probs
 
 
 def inference_batch(data, model, verbose, batch_size, num_workers):
@@ -102,16 +112,19 @@ def inference_batch(data, model, verbose, batch_size, num_workers):
     if verbose:
         dataloader = tqdm.tqdm(dataloader)
         
-    all_probs, predicted_move_probs, predicted_moves, predicted_win_probs = get_preds(model, dataloader, all_moves_dict_reversed)
+    move_probs, win_probs = get_preds(model, dataloader, all_moves_dict_reversed)
     
-    data['predicted_move'] = predicted_moves
-    data['predicted_move_prob'] = predicted_move_probs
-    data['predicted_win_prob'] = predicted_win_probs
-    data['all_probs'] = all_probs.tolist()
+    data["win_probs"] = win_probs
+    data["move_probs"] = move_probs
     
-    acc = (data['predicted_move'] == data['move']).mean()
+    acc = 0
+    for i in range(len(data)):
+        highest_prob_move = max(move_probs[i], key=move_probs[i].get)
+        if highest_prob_move == data.iloc[i]["move"]:
+            acc += 1
+    acc = round(acc / len(data), 4)
     
-    return data, round(acc, 4)
+    return data, acc
 
 
 def prepare():
@@ -142,15 +155,29 @@ def inference_each(model, prepared, fen, elo_self, elo_oppo):
     
     logits_maia, _, logits_value = model(board_input, elo_self, elo_oppo)
     logits_maia_legal = logits_maia * legal_moves
-    probs = logits_maia_legal.softmax(dim=-1)
-
-    predicted_move_probs = probs.max(dim=-1).values.item()
-    predicted_move_index = probs.argmax(dim=-1)
-    predicted_move = all_moves_dict_reversed[predicted_move_index.item()]
-    if fen.split(' ')[1] == 'b':
-        predicted_move = mirror_move(predicted_move)
-    predicted_win_prob = (logits_value / 2 + 0.5).item()
-    predicted_win_prob = min(max(0, predicted_win_prob), 1)
+    probs = logits_maia_legal.softmax(dim=-1).cpu().tolist()
     
-    return {"predicted_move": predicted_move, "predicted_move_prob": round(predicted_move_probs, 4), "predicted_win_prob": round(predicted_win_prob, 4)}
+    logits_value = (logits_value / 2 + 0.5).clamp(0, 1).item()
+    
+    black_flag = False
+    if fen.split(" ")[1] == "b":
+        logits_value = 1 - logits_value
+        black_flag = True
+    win_prob = round(logits_value, 4)
+    
+    move_probs = {}
+    legal_move_indices = legal_moves.nonzero().flatten().cpu().numpy().tolist()
+    legal_moves_mirrored = []
+    for move_idx in legal_move_indices:
+        move = all_moves_dict_reversed[move_idx]
+        if black_flag:
+            move = mirror_move(move)
+        legal_moves_mirrored.append(move)
+    
+    for j in range(len(legal_move_indices)):
+        move_probs[legal_moves_mirrored[j]] = round(probs[0][legal_move_indices[j]], 4)
+    
+    move_probs = dict(sorted(move_probs.items(), key=lambda item: item[1], reverse=True))
+    
+    return move_probs, win_prob
 
