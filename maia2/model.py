@@ -1,11 +1,12 @@
 import gdown
 import os
-from .main import parse_args, MAIA2Model
-from .utils import get_all_possible_moves, create_elo_dict
+from .main import MAIA2Model
+from .utils import get_all_possible_moves, create_elo_dict, parse_args
 import torch
 from torch import nn
 import warnings
 warnings.filterwarnings("ignore")
+import pdb
 
 def from_pretrained(type, device, save_root = "./maia2_models"):
     
@@ -29,7 +30,12 @@ def from_pretrained(type, device, save_root = "./maia2_models"):
         print(f"Downloading model for {type} games.")
         gdown.download(url, output_path, quiet=False)
 
-    cfg = parse_args()
+    cfg_url = "https://drive.google.com/uc?id=1GQTskYMVMubNwZH2Bi6AmevI15CS6gk0"
+    cfg_path = os.path.join(save_root, "config.yaml")
+    if not os.path.exists(cfg_path):
+        gdown.download(cfg_url, cfg_path, quiet=False)
+
+    cfg = parse_args(cfg_path)
 
     all_moves = get_all_possible_moves()
     elo_dict = create_elo_dict()

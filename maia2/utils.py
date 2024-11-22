@@ -10,6 +10,24 @@ import requests
 import tqdm
 import pyzstd
 import re
+import yaml
+
+
+class Config:
+    
+    def __init__(self, config_dict):
+        for key, value in config_dict.items():
+            setattr(self, key, value)
+
+
+def parse_args(cfg_file_path):
+
+    with open(cfg_file_path, 'r') as f:
+        cfg_dict = yaml.safe_load(f)
+    
+    cfg = Config(cfg_dict)
+
+    return cfg
 
 
 def seed_everything(seed: int):

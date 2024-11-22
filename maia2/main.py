@@ -4,7 +4,6 @@ import pdb
 from multiprocessing import Pool, cpu_count, Queue, Process
 import torch
 import tqdm
-import argparse
 from .utils import *
 import torch.nn as nn
 import torch.nn.functional as F
@@ -558,48 +557,3 @@ def worker_wrapper(semaphore, *args, **kwargs):
     with semaphore:
         preprocess_thread(*args, **kwargs)
 
-
-def parse_args(args=None):
-
-    parser = argparse.ArgumentParser()
-
-    # Supporting Arguments
-    parser.add_argument('--data_root', default='/datadrive2/lichess_data', type=str)
-    parser.add_argument('--seed', default=42, type=int)
-    parser.add_argument('--num_workers', default=16, type=int)
-    parser.add_argument('--verbose', default=1, type=int)
-    parser.add_argument('--max_epochs', default=3, type=int)
-    parser.add_argument('--max_ply', default=300, type=int)
-    parser.add_argument('--clock_threshold', default=30, type=int)
-    parser.add_argument('--chunk_size', default=20000, type=str)
-    parser.add_argument('--start_year', default=2018, type=int)
-    parser.add_argument('--start_month', default=5, type=int)
-    parser.add_argument('--end_year', default=2023, type=int)
-    parser.add_argument('--end_month', default=11, type=int)
-    parser.add_argument('--from_checkpoint', default=False, type=bool)
-    parser.add_argument('--checkpoint_epoch', default=0, type=int)
-    parser.add_argument('--checkpoint_year', default=2018, type=int)
-    parser.add_argument('--checkpoint_month', default=5, type=int)
-    parser.add_argument('--num_cpu_left', default=16, type=int)
-    parser.add_argument('--queue_length', default=2, type=int)
-
-    # Tunable Arguments
-    parser.add_argument('--lr', default=1e-4, type=float)
-    parser.add_argument('--wd', default=1e-5, type=float)
-    parser.add_argument('--batch_size', default=8192, type=int)
-    parser.add_argument('--first_n_moves', default=10, type=int)
-    parser.add_argument('--last_n_moves', default=10, type=int)
-    parser.add_argument('--dim_cnn', default=256, type=int)
-    parser.add_argument('--dim_vit', default=1024, type=int)
-    parser.add_argument('--num_blocks_cnn', default=5, type=int)
-    parser.add_argument('--num_blocks_vit', default=2, type=int)
-    parser.add_argument('--input_channels', default=18, type=int)
-    parser.add_argument('--vit_length', default=8, type=int)
-    parser.add_argument('--elo_dim', default=128, type=int)
-    parser.add_argument('--side_info', default=True, type=bool)
-    parser.add_argument('--side_info_coefficient', default=1, type=float)
-    parser.add_argument('--value', default=True, type=bool)
-    parser.add_argument('--value_coefficient', default=1, type=float)
-    parser.add_argument('--max_games_per_elo_range', default=20, type=int)
-
-    return parser.parse_args(args)
