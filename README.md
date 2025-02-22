@@ -1,6 +1,6 @@
 # Maia2: A Unified Model for Human-AI Alignment in Chess
 
-The official implementation of the NeurIPS 2024 paper **Maia-2** [[preprint](https://arxiv.org/abs/2409.20553)]. This work was led by [CSSLab](https://csslab.cs.toronto.edu/) at the University of Toronto.
+The official implementation of the NeurIPS 2024 paper **Maia-2** [[paper](https://arxiv.org/abs/2409.20553)]. This work was led by [CSSLab](https://csslab.cs.toronto.edu/) at the University of Toronto.
 
 ## Abstract
 There are an increasing number of domains in which artificial intelligence (AI) systems both surpass human ability and accurately model human behavior. This introduces the possibility of algorithmically-informed teaching in these domains through more relatable AI partners and deeper insights into human decision-making. Critical to achieving this goal, however, is coherently modeling human behavior at various skill levels. Chess is an ideal model system for conducting research into this kind of human-AI alignment, with its rich history as a pivotal testbed for AI research, mature superhuman AI systems like AlphaZero, and precise measurements of skill via chess rating systems. Previous work in modeling human decision-making in chess uses completely independent models to capture human style at different skill levels, meaning they lack coherence in their ability to adapt to the full spectrum of human improvement and are ultimately limited in their effectiveness as AI partners and teaching tools. In this work, we propose a unified modeling approach for human-AI alignment in chess that coherently captures human style across different skill levels and directly captures how people improve. Recognizing the complex, non-linear nature of human learning, we introduce a skill-aware attention mechanism to dynamically integrate players’ strengths with encoded chess positions, enabling our model to be sensitive to evolving player skill. Our experimental results demonstrate that this unified framework significantly enhances the alignment between AI and human players across a diverse range of expertise levels, paving the way for deeper insights into human decision-making and AI-guided teaching tools.
@@ -100,15 +100,15 @@ If you would like to restore training from a checkpoint, please modify the `from
 If you find our code or pre-trained models useful, please cite the arxiv version for now as follows:
 
 ```bibtex
-@article{tang2024maia,
-  title={Maia-2: A Unified Model for Human-AI Alignment in Chess},
-  author={Tang, Zhenwei and Jiao, Difan and McIlroy-Young, Reid and Kleinberg, Jon and Sen, Siddhartha and Anderson, Ashton},
-  journal={arXiv preprint arXiv:2409.20553},
-  year={2024}
+@inproceedings{
+tang2024maia,
+title={Maia-2: A Unified Model for Human-{AI} Alignment in Chess},
+author={Zhenwei Tang and Difan Jiao and Reid McIlroy-Young and Jon Kleinberg and Siddhartha Sen and Ashton Anderson},
+booktitle={The Thirty-eighth Annual Conference on Neural Information Processing Systems},
+year={2024},
+url={https://openreview.net/forum?id=XWlkhRn14K}
 }
 ```
-
-We will update the citation infomation to the official version once NeurIPS 2024 Proceedings are published.
 
 ## Contact
 
