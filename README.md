@@ -97,7 +97,7 @@ If you would like to restore training from a checkpoint, please modify the `from
 
 ## Citation
 
-If you find our code or pre-trained models useful, please cite the arxiv version for now as follows:
+If you find our code or pre-trained models useful, please cite our work as follows:
 
 ```bibtex
 @inproceedings{
