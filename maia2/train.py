@@ -13,9 +13,9 @@ import pdb
 
 def run(cfg):
     
-    print('Configurations:', flush=True)
+    print('Configurations :', flush=True)
     for arg in vars(cfg):
-        print(f'\t{arg}: {getattr(cfg, arg)}', flush=True)
+        print(f'\t{arg} : {getattr(cfg, arg)}', flush=True)
     seed_everything(cfg.seed)
     num_processes = cpu_count() - cfg.num_cpu_left
 
@@ -38,7 +38,7 @@ def run(cfg):
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.wd)
     N_params = count_parameters(model)
-    print(f'Trainable Parameters: {N_params}', flush=True)
+    print(f'Paramètres entraînables : {N_params}', flush=True)
 
     accumulated_samples = 0
     accumulated_games = 0
@@ -53,7 +53,7 @@ def run(cfg):
 
     for epoch in range(cfg.max_epochs):
         
-        print(f'Epoch {epoch + 1}', flush=True)
+        print(f'Époque {epoch + 1}', flush=True)
         pgn_paths = read_monthly_data_path(cfg)
         
         num_file = 0
@@ -61,10 +61,10 @@ def run(cfg):
             
             start_time = time.time()
             decompress_zst(pgn_path + '.zst', pgn_path)
-            print(f'Decompressing {pgn_path} took {readable_time(time.time() - start_time)}', flush=True)
+            print(f'Décompression de {pgn_path} a pris {readable_time(time.time() - start_time)}', flush=True)
 
             pgn_chunks = read_or_create_chunks(pgn_path, cfg)
-            print(f'Training {pgn_path} with {len(pgn_chunks)} chunks.', flush=True)
+            print(f'Entraînement de {pgn_path} avec {len(pgn_chunks)} morceaux.', flush=True)
             
             queue = Queue(maxsize=cfg.queue_length)
             
@@ -93,14 +93,14 @@ def run(cfg):
                     accumulated_samples += len(data)
                     accumulated_games += game_count
                     print(f'[{num_chunk}/{len(pgn_chunks)}]', flush=True)
-                    print(f'[# Positions]: {readable_num(accumulated_samples)}', flush=True)
-                    print(f'[# Games]: {readable_num(accumulated_games)}', flush=True)
-                    print(f'[# Loss]: {loss} | [# Loss MAIA]: {loss_maia} | [# Loss Side Info]: {loss_side_info} | [# Loss Value]: {loss_value}', flush=True)
+                    print(f'[# Positions] : {readable_num(accumulated_samples)}', flush=True)
+                    print(f'[# Parties] : {readable_num(accumulated_games)}', flush=True)
+                    print(f'[# Perte] : {loss} | [# Perte MAIA] : {loss_maia} | [# Perte Infos Latérales] : {loss_side_info} | [# Perte Valeur] : {loss_value}', flush=True)
                     if num_chunk == len(pgn_chunks):
                         break
 
             num_file += 1
-            print(f'### ({num_file} / {len(pgn_paths)}) Took {readable_time(time.time() - start_time)} to train {pgn_path} with {len(pgn_chunks)} chunks.', flush=True)
+            print(f'### ({num_file} / {len(pgn_paths)}) A pris {readable_time(time.time() - start_time)} pour entraîner {pgn_path} avec {len(pgn_chunks)} morceaux.', flush=True)
             os.remove(pgn_path)
             
             torch.save({'model_state_dict': model.state_dict(),

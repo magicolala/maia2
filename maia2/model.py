@@ -22,12 +22,12 @@ def from_pretrained(type, device, save_root = "./maia2_models"):
         output_path = os.path.join(save_root, "rapid_model.pt")
     
     else:
-        raise ValueError("Invalid model type. Choose between 'blitz' and 'rapid'.")
+        raise ValueError("Type de modèle invalide. Choisissez entre 'blitz' et 'rapid'.")
 
     if os.path.exists(output_path):
-        print(f"Model for {type} games already downloaded.")
+        print(f"Modèle pour les parties {type} déjà téléchargé.")
     else:
-        print(f"Downloading model for {type} games.")
+        print(f"Téléchargement du modèle pour les parties {type}.")
         gdown.download(url, output_path, quiet=False)
 
     cfg_url = "https://drive.google.com/uc?id=1GQTskYMVMubNwZH2Bi6AmevI15CS6gk0"
@@ -42,20 +42,14 @@ def from_pretrained(type, device, save_root = "./maia2_models"):
 
     model = MAIA2Model(len(all_moves), elo_dict, cfg)
     model = nn.DataParallel(model)
-    
+
     checkpoint = torch.load(output_path, map_location='cpu')
     model.load_state_dict(checkpoint['model_state_dict'])
     model = model.module
-    
+
     if device == "gpu":
         model = model.cuda()
-    
-    print(f"Model for {type} games loaded to {device}.")
+
+    print(f"Modèle pour les parties {type} chargé sur {device}.")
     
     return model
-    
-    
-    
-    
-    
-    

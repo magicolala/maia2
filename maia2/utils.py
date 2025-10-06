@@ -46,9 +46,9 @@ def delete_file(filename):
     
     if os.path.exists(filename):
         os.remove(filename)
-        print(f"Data {filename} has been deleted.")
+        print(f"Les données {filename} ont été supprimées.")
     else:
-        print(f"The file '{filename}' does not exist.")
+        print(f"Le fichier '{filename}' n'existe pas.")
 
 
 def readable_num(num):
@@ -180,14 +180,14 @@ def read_or_create_chunks(pgn_path, cfg):
     cache_file = pgn_path.replace('.pgn', '_chunks.pkl')
 
     if os.path.exists(cache_file):
-        print(f"Loading cached chunks from {cache_file}")
+        print(f"Chargement des morceaux mis en cache depuis {cache_file}")
         with open(cache_file, 'rb') as f:
             pgn_chunks = pickle.load(f)
     else:
-        print(f"Cache not found. Creating chunks for {pgn_path}")
+        print(f"Cache non trouvé. Création de morceaux pour {pgn_path}")
         start_time = time.time()
         pgn_chunks = get_chunks(pgn_path, cfg.chunk_size)
-        print(f'Chunking took {readable_time(time.time() - start_time)}', flush=True)
+        print(f'Le découpage a pris {readable_time(time.time() - start_time)}', flush=True)
         
         with open(cache_file, 'wb') as f:
             pickle.dump(pgn_chunks, f)

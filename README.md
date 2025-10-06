@@ -1,11 +1,12 @@
-# Maia2: A Unified Model for Human-AI Alignment in Chess
+# Maia2 : Un modèle unifié pour l'alignement humain-IA aux échecs
 
-The official implementation of the NeurIPS 2024 paper **Maia-2** [[paper](https://arxiv.org/abs/2409.20553)]. This work was led by [CSSLab](https://csslab.cs.toronto.edu/) at the University of Toronto.
+L'implémentation officielle du papier NeurIPS 2024 **Maia-2** [[papier](https://arxiv.org/abs/2409.20553)]. Ce travail est dirigé par le [CSSLab](https://csslab.cs.toronto.edu/) de l'Université de Toronto.
 
-## Abstract
-There are an increasing number of domains in which artificial intelligence (AI) systems both surpass human ability and accurately model human behavior. This introduces the possibility of algorithmically-informed teaching in these domains through more relatable AI partners and deeper insights into human decision-making. Critical to achieving this goal, however, is coherently modeling human behavior at various skill levels. Chess is an ideal model system for conducting research into this kind of human-AI alignment, with its rich history as a pivotal testbed for AI research, mature superhuman AI systems like AlphaZero, and precise measurements of skill via chess rating systems. Previous work in modeling human decision-making in chess uses completely independent models to capture human style at different skill levels, meaning they lack coherence in their ability to adapt to the full spectrum of human improvement and are ultimately limited in their effectiveness as AI partners and teaching tools. In this work, we propose a unified modeling approach for human-AI alignment in chess that coherently captures human style across different skill levels and directly captures how people improve. Recognizing the complex, non-linear nature of human learning, we introduce a skill-aware attention mechanism to dynamically integrate players’ strengths with encoded chess positions, enabling our model to be sensitive to evolving player skill. Our experimental results demonstrate that this unified framework significantly enhances the alignment between AI and human players across a diverse range of expertise levels, paving the way for deeper insights into human decision-making and AI-guided teaching tools.
+## Résumé
 
-## Requirements
+Il y a un nombre croissant de domaines dans lesquels les systèmes d'intelligence artificielle (IA) surpassent à la fois les capacités humaines et modélisent avec précision le comportement humain. Cela introduit la possibilité d'un enseignement informé d'algorithmes dans ces domaines grâce à des partenaires IA plus accessibles et à des insights plus profonds sur la prise de décision humaine. Cependant, essentiel à l'atteinte de cet objectif est la modélisation cohérente du comportement humain à différents niveaux de compétence. Les échecs sont un système modèle idéal pour mener des recherches sur ce type d'alignement humain-IA, avec son riche historique en tant que terrain d'essai crucial pour la recherche en IA, des systèmes IA surhumains matures comme AlphaZero, et des mesures précises de compétence via les systèmes de notation d'échecs. Les travaux précédents sur la modélisation de la prise de décision humaine aux échecs utilisent des modèles complètement indépendants pour capturer le style humain à différents niveaux de compétence, ce qui signifie qu'ils manquent de cohérence dans leur capacité à s'adapter au spectre complet de l'amélioration humaine et sont finalement limités dans leur efficacité en tant que partenaires IA et outils d'enseignement. Dans ce travail, nous proposons une approche de modélisation unifiée pour l'alignement humain-IA aux échecs qui capture coheremment le style humain à travers différents niveaux de compétence et capture directement comment les gens progressent. Reconnaissant la nature complexe et non linéaire de l'apprentissage humain, nous introduisons un mécanisme d'attention sensibilisé aux compétences pour intégrer dynamiquement les forces des joueurs avec les positions d'échecs encodées, permettant à notre modèle d'être sensible à l'évolution des compétences des joueurs. Nos résultats expérimentaux démontrent que ce cadre unifié améliore considérablement l'alignement entre IA et joueurs humains à travers une large gamme de niveaux d'expertise, ouvrant la voie à des insights plus profonds sur la prise de décision humaine et aux outils d'enseignement guidés par IA.
+
+## Exigences
 
 ```sh
 chess==1.10.0
@@ -19,7 +20,7 @@ torch==2.4.0
 tqdm==4.65.0
 ```
 
-The version requirements may not be very strict, but the above configuration should work.
+Les exigences de version peuvent ne pas être très strictes, mais la configuration ci-dessus devrait fonctionner.
 
 ## Installation
 
@@ -27,45 +28,47 @@ The version requirements may not be very strict, but the above configuration sho
 pip install maia2
 ```
 
-## Quick Start: Batch Inference
+## Démarrage rapide : Inférence par lot
 
 ```python
 from maia2 import model, dataset, inference
 ```
 
-You can load a model for `"rapid"` or `"blitz"` games with either CPU or GPU.
+Vous pouvez charger un modèle pour les parties `"rapid"` ou `"blitz"` avec CPU ou GPU.
 
 ```python
 maia2_model = model.from_pretrained(type="rapid", device="gpu")
 ```
 
-Load a pre-defined example test dataset for demonstration.
+Chargez un ensemble de données de test d'exemple pré-défini pour la démonstration.
 
 ```python
 data = dataset.load_example_test_dataset()
 ```
 
-Batch Inference
-- `batch_size=1024`: Set the batch size for inference.
-- `num_workers=4`: Use multiple worker threads for data loading and processing.
-- `verbose=1`: Show the progress bar during the inference process.
+Inférence par lot
+
+- `batch_size=1024` : Définissez la taille du lot pour l'inférence.
+- `num_workers=4` : Utilisez plusieurs threads de travail pour le chargement et le traitement des données.
+- `verbose=1` : Affichez la barre de progression pendant le processus d'inférence.
 
 ```python
 data, acc = inference.inference_batch(data, maia2_model, verbose=1, batch_size=1024, num_workers=4)
 print(acc)
 ```
 
-`data` will be updated in-place to include inference results.
+`data` sera mis à jour sur place pour inclure les résultats d'inférence.
 
+## Inférence par position
 
-## Position-wise Inference
+Nous utilisons le même ensemble de données de test d'exemple pour la démonstration.
 
-We use the same example test dataset for demonstration.
 ```python
 prepared = inference.prepare()
 ```
 
-Once the prepapration is done, you can easily run inference position by position:
+Une fois la préparation terminée, vous pouvez facilement exécuter l'inférence position par position :
+
 ```python
 for fen, move, elo_self, elo_oppo, _, _ in data.values[:10]:
     move_probs, win_prob = inference.inference_each(maia2_model, prepared, fen, elo_self, elo_oppo)
@@ -73,18 +76,17 @@ for fen, move, elo_self, elo_oppo, _, _ in data.values[:10]:
     print(f"Correct: {max(move_probs, key=move_probs.get) == move}")
 ```
 
-Try to tweak the skill level (ELO) of the activce player `elo_self` and opponent play `elo_oppo`! You may find it insightful for some positions.
+Essayez de modifier le niveau de compétence (ELO) du joueur actif `elo_self` et du joueur opposé `elo_oppo` ! Vous pourriez trouver cela perspicace pour certaines positions.
 
+## Entraînement
 
-## Training
+### Téléchargez des données depuis [Lichess Database](https://database.lichess.org/)
 
-### Download data from [Lichess Database](https://database.lichess.org/)
+Veuillez télécharger les données de parties pour la période que vous souhaitez entraîner en format `.pgn.zst`. La décompression des données est gérée par `maia2`, vous n'avez donc pas besoin de décompresser ces fichiers avant l'entraînement.
 
-Please download the game data of the time period you would like to train on in `.pgn.zst` format. Data decompressing is handled by `maia2`, so you don't need to decompress these files before training.
+### Entraînement avec nos paramètres par défaut
 
-### Training with our default settings
-
-Please modify `data_root` in the config file to indicate where you stored the downloaded lichess data. It will take around 1 week to finish training 1 epoch with 2\*A100 and 16\*CPUs.
+Veuillez modifier `data_root` dans le fichier de configuration pour indiquer où vous avez stocké les données Lichess téléchargées. Cela prendra environ 1 semaine pour finir l'entraînement d'1 époque avec 2*A100 et 16*CPU.
 
 ```python
 from maia2 import train, utils
@@ -92,12 +94,11 @@ cfg = utils.parse_args(cfg_file_path="./maia2_models/config.yaml")
 train.run(cfg)
 ```
 
-If you would like to restore training from a checkpoint, please modify the `from_checkpoint`, `checkpoint_year`, and `checkpoint_month` to indicate the initialization you need.
-
+Si vous souhaitez restaurer l'entraînement à partir d'un point de contrôle, veuillez modifier le `from_checkpoint`, `checkpoint_year`, et `checkpoint_month` pour indiquer l'initialisation dont vous avez besoin.
 
 ## Citation
 
-If you find our code or pre-trained models useful, please cite our work as follows:
+Si vous trouvez notre code ou les modèles pré-entraînés utiles, veuillez citer notre travail comme suit :
 
 ```bibtex
 @inproceedings{
@@ -112,8 +113,8 @@ url={https://openreview.net/forum?id=XWlkhRn14K}
 
 ## Contact
 
-If you have any questions or suggestions, please feel free to contact us via email: josephtang@cs.toronto.edu.
+Si vous avez des questions ou des suggestions, n'hésitez pas à nous contacter par email : <josephtang@cs.toronto.edu>.
 
-## License
+## Licence
 
-This project is licensed under the [MIT License](LICENSE).
+Ce projet est licencié sous la [licence MIT](LICENSE).

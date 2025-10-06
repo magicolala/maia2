@@ -420,7 +420,7 @@ class MAIA2Model(torch.nn.Module):
 
 def read_monthly_data_path(cfg):
     
-    print('Training Data:', flush=True)
+    print('Données d\'entraînement :', flush=True)
     pgn_paths = []
     
     for year in range(cfg.start_year, cfg.end_year + 1):
@@ -483,9 +483,9 @@ def evaluate_MAIA1_data(model, all_moves_dict, elo_dict, cfg, tiny=False):
                                                 num_workers=cfg.num_workers)
         if cfg.verbose:
             dataloader = tqdm.tqdm(dataloader)
-        print(f'Testing Elo Range {start}-{end} with MAIA 1 data:', flush=True)
+        print(f'Test de la gamme Elo {start}-{end} avec les données MAIA 1 :', flush=True)
         correct_move, counter = evaluate(model, dataloader)
-        print(f'Accuracy Move Prediction: {round(correct_move / counter, 4)}', flush=True)
+        print(f'Précision de la prédiction des mouvements : {round(correct_move / counter, 4)}', flush=True)
         if tiny:
             break
 
@@ -556,4 +556,3 @@ def preprocess_thread(queue, cfg, pgn_path, pgn_chunks_sublist, elo_dict):
 def worker_wrapper(semaphore, *args, **kwargs):
     with semaphore:
         preprocess_thread(*args, **kwargs)
-

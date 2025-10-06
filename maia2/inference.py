@@ -8,7 +8,7 @@ def preprocessing(fen, elo_self, elo_oppo, elo_dict, all_moves_dict):
     elif fen.split(' ')[1] == 'b':
         board = chess.Board(fen).mirror()
     else:
-        raise ValueError(f"Invalid fen: {fen}")
+        raise ValueError(f"FEN invalide : {fen}")
         
     board_input = board_to_tensor(board)
     
@@ -70,14 +70,14 @@ def get_preds(model, dataloader, all_moves_dict_reversed):
                 fen = fens[i]
                 black_flag = False
                 
-                # calculate win probability
+                # calculer la probabilité de gain
                 logit_value = logits_value[i]
                 if fen.split(" ")[1] == "b":
                     logit_value = 1 - logit_value
                     black_flag = True
                 win_probs.append(round(logit_value, 4))
-                
-                # calculate move probabilities
+
+                # calculer les probabilités des mouvements
                 move_probs_each = {}
                 legal_move_indices = legal_moves[i].nonzero().flatten().cpu().numpy().tolist()
                 legal_moves_mirrored = []
@@ -180,4 +180,3 @@ def inference_each(model, prepared, fen, elo_self, elo_oppo):
     move_probs = dict(sorted(move_probs.items(), key=lambda item: item[1], reverse=True))
     
     return move_probs, win_prob
-

@@ -10,10 +10,10 @@ def load_example_test_dataset(save_root = "./maia2_data"):
     output_path = os.path.join(save_root, "example_test_dataset.csv")
     
     if os.path.exists(output_path):
-        print("Example test dataset already downloaded.")
+        print("Ensemble de données de test d'exemple déjà téléchargé.")
     else:
         gdown.download(url, output_path, quiet=False)
-        print("Example test dataset downloaded.")
+        print("Ensemble de données de test d'exemple téléchargé.")
         
     data = pd.read_csv(output_path)
     data = data[data.move_ply > 10][['board', 'move', 'active_elo', 'opponent_elo']]
@@ -28,10 +28,9 @@ def load_example_train_dataset(save_root = "./maia2_data"):
     output_path = os.path.join(save_root, "example_train_dataset.csv")
     
     if os.path.exists(output_path):
-        print("Example train dataset already downloaded.")
+        print("Ensemble de données d'entraînement d'exemple déjà téléchargé.")
     else:
         gdown.download(url, output_path, quiet=False)
-        print("Example train dataset downloaded.")
+        print("Ensemble de données d'entraînement d'exemple téléchargé.")
     
     return output_path
-    

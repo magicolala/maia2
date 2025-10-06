@@ -1,25 +1,25 @@
 #!/bin/bash
 
-# Loop over each year
+# Boucle sur chaque année
 for year in {2018..2023}; do
-    # Loop over each month
+    # Boucle sur chaque mois
     for month in {05..12}; do
-        # Form the URL
+        # Former l'URL
         url="https://database.lichess.org/standard/lichess_db_standard_rated_${year}-${month}.pgn.zst"
 
-        # Check if the URL exists
+        # Vérifier si l'URL existe
         if wget --spider $url 2>/dev/null; then
-            # Download the file
+            # Télécharger le fichier
             wget "$url"
 
-            # The downloaded file name
+            # Le nom du fichier téléchargé
             filename="lichess_db_standard_rated_${year}-${month}.pgn.zst"
 
         else
-            echo "File for ${year}-${month} does not exist."
+            echo "Le fichier pour ${year}-${month} n'existe pas."
         fi
 
-        # Stop the loop if we've reached October 2023
+        # Arrêter la boucle si nous avons atteint octobre 2023
         if [ "$year" -eq 2023 ] && [ "$month" = "10" ]; then
             break
         fi
