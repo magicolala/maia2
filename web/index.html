@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maia2 - Interface de Test</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="material-icons">psychology</span>
+                <h1>Maia2</h1>
+            </div>
+            <div class="subtitle">Modèle Unifié pour l'Alignement Humain-IA aux Échecs</div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar Configuration -->
+        <aside class="sidebar card">
+            <h2 class="section-title">
+                <span class="material-icons">settings</span>
+                Configuration
+            </h2>
+            
+            <!-- Model Selection -->
+            <div class="config-section">
+                <h3>Modèle</h3>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="model-type" value="rapid" checked>
+                        <span>Rapid</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="model-type" value="blitz">
+                        <span>Blitz</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Device Selection -->
+            <div class="config-section">
+                <h3>Dispositif</h3>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="device" value="cpu" checked>
+                        <span>CPU</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="device" value="gpu">
+                        <span>GPU</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- ELO Settings -->
+            <div class="config-section">
+                <h3>Joueur Actif</h3>
+                <div class="input-group">
+                    <label for="elo-self">ELO du joueur actif</label>
+                    <input type="number" id="elo-self" value="1500" min="800" max="2800" step="50">
+                    <span class="input-hint">800 - 2800</span>
+                </div>
+            </div>
+
+            <div class="config-section">
+                <h3>Adversaire</h3>
+                <div class="input-group">
+                    <label for="elo-opponent">ELO de l'adversaire</label>
+                    <input type="number" id="elo-opponent" value="1500" min="800" max="2800" step="50">
+                    <span class="input-hint">800 - 2800</span>
+                </div>
+            </div>
+
+            <!-- FEN Input -->
+            <div class="config-section">
+                <h3>Position (FEN)</h3>
+                <div class="input-group">
+                    <textarea id="fen-input" placeholder="Entrez une position FEN...">rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1</textarea>
+                    <button class="btn-secondary" id="load-fen-btn">
+                        <span class="material-icons">upload</span>
+                        Charger Position
+                    </button>
+                </div>
+            </div>
+
+            <!-- Top K Settings -->
+            <div class="config-section">
+                <h3>Suggestions</h3>
+                <div class="input-group">
+                    <label for="top-k">Nombre de coups suggérés</label>
+                    <input type="number" id="top-k" value="5" min="1" max="10" step="1">
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="button-group">
+                <button class="btn-primary" id="init-model-btn">
+                    <span class="material-icons">play_arrow</span>
+                    Initialiser le Modèle
+                </button>
+                <button class="btn-primary" id="predict-btn" disabled>
+                    <span class="material-icons">psychology</span>
+                    Prédire
+                </button>
+                <button class="btn-secondary" id="reset-board-btn">
+                    <span class="material-icons">refresh</span>
+                    Réinitialiser
+                </button>
+            </div>
+
+            <!-- Status -->
+            <div class="status-section" id="status-section">
+                <div class="status-indicator">
+                    <span class="status-dot" id="status-dot"></span>
+                    <span id="status-text">Non initialisé</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Chess Board Section -->
+            <section class="card board-section">
+                <h2 class="section-title">
+                    <span class="material-icons">grid_on</span>
+                    Échiquier
+                </h2>
+                <div id="chess-board" class="chess-board">
+                    <!-- The board will be generated by JavaScript -->
+                </div>
+                <div class="board-info">
+                    <div class="info-item">
+                        <span class="material-icons">info</span>
+                        <span id="turn-indicator">Tour: Blancs</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="card results-section">
+                <h2 class="section-title">
+                    <span class="material-icons">analytics</span>
+                    Résultats de Prédiction
+                </h2>
+                
+                <div class="results-content" id="results-content">
+                    <div class="empty-state">
+                        <span class="material-icons">query_stats</span>
+                        <p>Aucune prédiction pour le moment</p>
+                        <p class="empty-state-hint">Configurez les paramètres et cliquez sur "Prédire"</p>
+                    </div>
+                </div>
+
+                <!-- Win Probability -->
+                <div class="win-probability" id="win-probability" style="display: none;">
+                    <h3>Probabilité de Gain</h3>
+                    <div class="probability-bar">
+                        <div class="probability-fill" id="probability-fill"></div>
+                        <span class="probability-text" id="probability-text">50%</span>
+                    </div>
+                </div>
+
+                <!-- Move Suggestions -->
+                <div class="move-suggestions" id="move-suggestions" style="display: none;">
+                    <h3>Coups Suggérés</h3>
+                    <div class="suggestions-list" id="suggestions-list">
+                        <!-- Suggestions will be inserted here -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner"></div>
+        <p id="loading-text">Chargement...</p>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast" id="toast">
+        <span class="material-icons" id="toast-icon">info</span>
+        <span id="toast-message"></span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
