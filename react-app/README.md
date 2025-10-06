@@ -30,11 +30,13 @@ Interface web moderne construite avec React et Material-UI pour tester et config
 ### Étapes
 
 1. **Installer les dépendances** :
+
 ```bash
 npm install
 ```
 
 2. **S'assurer que le serveur Flask est démarré** :
+
 ```bash
 # Dans le dossier web/
 python app.py
@@ -44,7 +46,7 @@ Le serveur Flask doit tourner sur `http://localhost:5000`
 
 ## 💻 Développement
 
-### Démarrer l'application en mode développement :
+### Démarrer l'application en mode développement
 
 ```bash
 npm start
@@ -62,7 +64,7 @@ Cela permet d'éviter les problèmes de CORS en développement.
 
 ## 🏗️ Build pour Production
 
-### Créer un build optimisé :
+### Créer un build optimisé
 
 ```bash
 npm run build
@@ -70,7 +72,7 @@ npm run build
 
 Les fichiers optimisés seront générés dans le dossier `build/`.
 
-### Servir le build avec Flask :
+### Servir le build avec Flask
 
 Le serveur Flask peut servir l'application React en production. Les fichiers du dossier `build/` doivent être copiés dans le dossier approprié du backend Flask.
 
@@ -97,11 +99,13 @@ react-app/
 ## 🎨 Composants
 
 ### Header
+
 - Logo et titre Maia2
 - Gradient bleu Material Design
 - Sticky en haut de page
 
 ### Sidebar
+
 - Sélection du type de modèle (Rapid/Blitz)
 - Choix du dispositif (CPU/GPU)
 - Configuration des ELO (joueur actif et adversaire)
@@ -111,12 +115,14 @@ react-app/
 - Indicateur de statut
 
 ### ChessBoard
+
 - Échiquier professionnel avec `react-chessboard`
 - Affichage de la position FEN
 - Indicateur du tour (Blancs/Noirs)
 - Design élégant avec ombres
 
 ### Results
+
 - État vide avec icône et message
 - Barre de progression pour probabilité de gain
 - Liste des coups suggérés avec :
@@ -130,7 +136,9 @@ react-app/
 L'application communique avec le backend Flask via les endpoints suivants :
 
 ### `POST /api/init`
+
 Initialise le modèle Maia2
+
 ```json
 {
   "model_type": "rapid",
@@ -139,7 +147,9 @@ Initialise le modèle Maia2
 ```
 
 ### `POST /api/predict`
+
 Fait une prédiction
+
 ```json
 {
   "fen": "...",
@@ -150,10 +160,13 @@ Fait une prédiction
 ```
 
 ### `GET /api/status`
+
 Vérifie le statut du modèle
 
 ### `POST /api/validate_fen`
+
 Valide une position FEN
+
 ```json
 {
   "fen": "..."
@@ -173,6 +186,7 @@ Valide une position FEN
 ## 🐛 Dépannage
 
 ### Le serveur ne démarre pas
+
 ```bash
 # Nettoyer node_modules et réinstaller
 rm -rf node_modules package-lock.json
@@ -180,10 +194,13 @@ npm install
 ```
 
 ### Erreur de proxy
+
 Vérifiez que le serveur Flask tourne sur `http://localhost:5000`
 
 ### Erreur de compilation
+
 Assurez-vous d'utiliser Node.js 14+ :
+
 ```bash
 node --version
 ```
@@ -191,6 +208,7 @@ node --version
 ## 📱 Responsive Design
 
 L'interface s'adapte automatiquement aux différentes tailles d'écran :
+
 - **Desktop** : Layout en 2 colonnes (sidebar + contenu)
 - **Tablet** : Layout adaptatif
 - **Mobile** : Layout en 1 colonne, échiquier adapté
@@ -200,6 +218,7 @@ L'interface s'adapte automatiquement aux différentes tailles d'écran :
 ### Modifier les couleurs
 
 Éditez le theme dans `src/App.js` :
+
 ```javascript
 const theme = createTheme({
   palette: {
@@ -213,6 +232,7 @@ const theme = createTheme({
 ### Modifier la taille de l'échiquier
 
 Dans `src/components/ChessBoard.jsx` :
+
 ```javascript
 <Chessboard 
   boardWidth={600}  // Modifier cette valeur
@@ -230,6 +250,7 @@ Dans `src/components/ChessBoard.jsx` :
 ## 🤝 Support
 
 Pour toute question ou problème :
+
 - Vérifiez que le backend Flask fonctionne
 - Consultez les logs de la console navigateur (F12)
 - Vérifiez les logs du terminal React
@@ -237,4 +258,3 @@ Pour toute question ou problème :
 ## 📄 Licence
 
 Ce projet suit la même licence que Maia2 (MIT License).
-

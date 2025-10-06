@@ -3,6 +3,16 @@
 /test
 /saves
 
+# Model files (too large for GitHub)
+maia2_models/*.pt
+maia2_models/*.pth
+*.pt
+*.pth
+
+# React
+react-app/node_modules/
+react-app/build/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

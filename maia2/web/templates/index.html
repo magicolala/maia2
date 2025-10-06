@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Maia-2 Web Interface</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <main class="page">
+        <header class="hero">
+            <h1>Maia-2 Sandbox</h1>
+            <p>Explorez les recommandations de Maia-2 pour n'importe quelle position FEN.</p>
+        </header>
+
+        <section class="card">
+            <form id="analyze-form" class="form">
+                <label for="fen" class="form__label">Position FEN</label>
+                <textarea id="fen" name="fen" class="form__input form__input--textarea" rows="4">rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1</textarea>
+
+                <div class="form__row">
+                    <label for="game_type" class="form__label">Style de partie</label>
+                    <select id="game_type" name="game_type" class="form__input">
+                        <option value="rapid" {% if default_model_type == 'rapid' %}selected{% endif %}>Rapid</option>
+                        <option value="blitz" {% if default_model_type == 'blitz' %}selected{% endif %}>Blitz</option>
+                    </select>
+                </div>
+
+                <div class="form__grid">
+                    <div>
+                        <label for="elo_self" class="form__label">ELO joueur</label>
+                        <input id="elo_self" name="elo_self" type="number" min="600" max="3000" step="25" value="1500" class="form__input">
+                    </div>
+                    <div>
+                        <label for="elo_oppo" class="form__label">ELO adversaire</label>
+                        <input id="elo_oppo" name="elo_oppo" type="number" min="600" max="3000" step="25" value="1500" class="form__input">
+                    </div>
+                </div>
+
+                <div class="form__actions">
+                    <button type="button" id="load-sample" class="button button--ghost" data-fen="r2q1rk1/ppp2ppp/2n2n2/3pp3/3P4/2P1PN2/PP1N1PPP/R1BQR1K1 w - - 0 12">Charger un exemple</button>
+                    <button type="submit" class="button">Analyser</button>
+                </div>
+                <p id="form-feedback" class="form__feedback" hidden></p>
+            </form>
+        </section>
+
+        <section id="results" class="card card--results" hidden>
+            <h2>Resultats de Maia-2</h2>
+            <div class="results__summary">
+                <div>
+                    <span class="results__label">Probabilite de gain</span>
+                    <span id="win-prob" class="results__value">-</span>
+                </div>
+                <div>
+                    <span class="results__label">Modele charge</span>
+                    <span id="model-type" class="results__value">-</span>
+                </div>
+            </div>
+            <h3>Meilleurs coups proposes</h3>
+            <ol id="moves" class="results__moves"></ol>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Lancez cette interface avec <code>python -m maia2.web</code> puis ouvrez <code>http://localhost:8000</code>.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+</html>
+
