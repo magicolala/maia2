@@ -9,6 +9,14 @@ import ChessBoard from './components/ChessBoard';
 import Results from './components/Results';
 import apiService from './services/api';
 
+// Enable debug mode
+const DEBUG = true;
+
+const logDebug = (component, action, data = null) => {
+  if (!DEBUG) return;
+  console.log(`🟢 [${component}] ${action}`, data || '');
+};
+
 const theme = createTheme({
   palette: {
     primary: {
