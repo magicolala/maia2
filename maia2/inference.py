@@ -149,8 +149,8 @@ def inference_each(model, prepared, fen, elo_self, elo_oppo):
     model.eval()
     
     board_input = board_input.unsqueeze(dim=0).to(device)
-    elo_self = torch.tensor([elo_self]).to(device)
-    elo_oppo = torch.tensor([elo_oppo]).to(device)
+    elo_self = torch.tensor([elo_self], dtype=torch.long).to(device)
+    elo_oppo = torch.tensor([elo_oppo], dtype=torch.long).to(device)
     legal_moves = legal_moves.unsqueeze(dim=0).to(device)
     
     logits_maia, _, logits_value = model(board_input, elo_self, elo_oppo)

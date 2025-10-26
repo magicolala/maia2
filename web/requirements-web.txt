@@ -1,3 +1,12 @@
 Flask==3.0.0
 flask-cors==4.0.0
-
+chess==1.10.0
+einops==0.8.0
+gdown==5.2.0
+numpy<2.0
+pandas==2.2.3
+pyyaml==6.0.2
+pyzstd==0.15.9
+Requests==2.32.3
+torch==2.4.0
+tqdm==4.65.0

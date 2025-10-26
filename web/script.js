@@ -163,8 +163,8 @@ async function makePrediction() {
         return;
     }
     
-    const eloSelf = parseInt(document.getElementById('elo-self').value);
-    const eloOpponent = parseInt(document.getElementById('elo-opponent').value);
+    const eloSelf = parseInt(document.getElementById('elo-self').value) || 1500;
+    const eloOpponent = parseInt(document.getElementById('elo-opponent').value) || 1500;
     const topK = parseInt(document.getElementById('top-k').value);
     
     showLoading('Prédiction en cours...');
