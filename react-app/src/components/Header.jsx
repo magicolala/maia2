@@ -1,6 +1,8 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Box } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Box, Button } from '@mui/material';
 import PsychologyIcon from '@mui/icons-material/Psychology';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 function Header() {
   return (
@@ -15,7 +17,7 @@ function Header() {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexGrow: 1 }}>
           <PsychologyIcon sx={{ fontSize: 40 }} />
           <Box>
-            <Typography variant="h5" component="h1" sx={{ fontWeight: 500 }}>
+            <Typography variant="h5" component="h1" sx={{ fontWeight: 500, cursor: 'pointer' }} onClick={() => window.location.href='/'}>
               Maia2
             </Typography>
             <Typography variant="caption" sx={{ opacity: 0.9, display: 'block' }}>
@@ -23,6 +25,24 @@ function Header() {
             </Typography>
           </Box>
         </Box>
+        
+        <Button 
+          component={Link} 
+          to="/config" 
+          variant="outlined"
+          startIcon={<SettingsIcon />}
+          sx={{
+            color: 'white',
+            borderColor: 'rgba(255, 255, 255, 0.5)',
+            '&:hover': {
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              borderColor: 'white',
+            }
+          }}
+        >
+          Configuration
+        </Button>
+
       </Toolbar>
     </AppBar>
   );

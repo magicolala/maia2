@@ -1,15 +1,12 @@
+import { NeoChessBoard } from './neochess/index.js';
+
 // API Configuration
 const API_BASE_URL = 'http://localhost:5000/api';
-
-// Chess pieces mapping
-const PIECES = {
-    'r': '♜', 'n': '♞', 'b': '♝', 'q': '♛', 'k': '♚', 'p': '♟',
-    'R': '♖', 'N': '♘', 'B': '♗', 'Q': '♕', 'K': '♔', 'P': '♙'
-};
 
 // State
 let currentFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 let modelInitialized = false;
+let board;
 
 // Initialize application
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,63 +17,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Initialize chess board
 function initializeBoard() {
-    const board = document.getElementById('chess-board');
-    board.innerHTML = '';
-    
-    for (let row = 0; row < 8; row++) {
-        for (let col = 0; col < 8; col++) {
-            const square = document.createElement('div');
-            square.className = `square ${(row + col) % 2 === 0 ? 'light' : 'dark'}`;
-            square.dataset.row = row;
-            square.dataset.col = col;
-            board.appendChild(square);
-        }
-    }
-    
-    loadFenToBoard(currentFen);
+    const boardContainer = document.getElementById('chess-board');
+    boardContainer.innerHTML = ''; // Clear any existing content
+    board = new NeoChessBoard(boardContainer, {
+        position: currentFen,
+        // Add any other options for NeoChessBoard here
+    });
 }
 
 // Load FEN to board
 function loadFenToBoard(fen) {
-    const board = document.getElementById('chess-board');
-    const squares = board.querySelectorAll('.square');
-    
-    // Clear all squares
-    squares.forEach(square => square.textContent = '');
-    
-    // Parse FEN
-    const parts = fen.split(' ');
-    const position = parts[0];
-    const turn = parts[1];
-    
-    // Update turn indicator
-    document.getElementById('turn-indicator').textContent = 
-        `Tour: ${turn === 'w' ? 'Blancs' : 'Noirs'}`;
-    
-    const rows = position.split('/');
-    let squareIndex = 0;
-    
-    rows.forEach(row => {
-        let colIndex = 0;
-        for (let char of row) {
-            if (isNaN(char)) {
-                // It's a piece
-                const square = squares[squareIndex];
-                if (square) {
-                    square.textContent = PIECES[char] || '';
-                }
-                squareIndex++;
-                colIndex++;
-            } else {
-                // It's a number (empty squares)
-                const emptySquares = parseInt(char);
-                squareIndex += emptySquares;
-                colIndex += emptySquares;
-            }
-        }
-    });
-    
+    if (board) {
+        board.setPosition(fen);
+    }
     currentFen = fen;
+    // Update turn indicator
+    const parts = fen.split(' ');
+    const turn = parts[1];
+    document.getElementById('turn-indicator').textContent =
+        `Tour: ${turn === 'w' ? 'Blancs' : 'Noirs'}`;
 }
 
 // Attach event listeners
@@ -243,7 +202,9 @@ function displayResults(data) {
 function resetBoard() {
     currentFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
     document.getElementById('fen-input').value = currentFen;
-    loadFenToBoard(currentFen);
+    if (board) {
+        board.reset();
+    }
     
     // Hide results
     document.getElementById('results-content').style.display = 'block';
@@ -342,4 +303,3 @@ function showToast(type, message) {
         toast.classList.remove('show');
     }, 4000);
 }
-

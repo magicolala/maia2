@@ -87,7 +87,33 @@ class ApiService {
       throw new Error(error.response?.data?.message || 'Erreur lors de la validation du FEN');
     }
   }
+
+  async getConfig() {
+    logDebug('GET', '/config', null);
+    
+    try {
+      const response = await axios.get(`${API_BASE_URL}/config`);
+      logDebug('GET', '/config', null, response.data);
+      return response.data;
+    } catch (error) {
+      logDebug('GET', '/config', null, null, error);
+      throw new Error('Impossible de récupérer la configuration');
+    }
+  }
+
+  async setConfig(config) {
+    const requestData = { config: config };
+    logDebug('POST', '/config', requestData);
+    
+    try {
+      const response = await axios.post(`${API_BASE_URL}/config`, requestData);
+      logDebug('POST', '/config', requestData, response.data);
+      return response.data;
+    } catch (error) {
+      logDebug('POST', '/config', requestData, null, error);
+      throw new Error(error.response?.data?.message || 'Erreur lors de la mise à jour de la configuration');
+    }
+  }
 }
 
 export default new ApiService();
-

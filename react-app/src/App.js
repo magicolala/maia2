@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box, Container, Grid, Paper, Snackbar, Alert, Backdrop, CircularProgress } from '@mui/material';
@@ -7,6 +8,7 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import ChessBoard from './components/ChessBoard';
 import Results from './components/Results';
+import Config from './components/Config';
 import apiService from './services/api';
 
 // Enable debug mode
@@ -158,81 +160,89 @@ function App() {
     setSnackbar({ ...snackbar, open: false });
   };
 
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: '#f8f9fa' }}>
-        <Header />
-        
-        <Container maxWidth="xl" sx={{ mt: 4, mb: 4, flex: 1 }}>
+  const MainContent = () => (
+    <Container maxWidth="xl" sx={{ mt: 4, mb: 4, flex: 1 }}>
+      <Grid container spacing={3}>
+        {/* Sidebar */}
+        <Grid item xs={12} md={3}>
+          <Sidebar
+            modelType={modelType}
+            setModelType={setModelType}
+            device={device}
+            setDevice={setDevice}
+            eloSelf={eloSelf}
+            setEloSelf={setEloSelf}
+            eloOpponent={eloOpponent}
+            setEloOpponent={setEloOpponent}
+            topK={topK}
+            setTopK={setTopK}
+            fen={fen}
+            modelInitialized={modelInitialized}
+            onInitialize={handleInitializeModel}
+            onPredict={handlePredict}
+            onReset={handleResetBoard}
+            onLoadFen={handleLoadFen}
+          />
+        </Grid>
+
+        {/* Main content */}
+        <Grid item xs={12} md={9}>
           <Grid container spacing={3}>
-            {/* Sidebar */}
-            <Grid item xs={12} md={3}>
-              <Sidebar
-                modelType={modelType}
-                setModelType={setModelType}
-                device={device}
-                setDevice={setDevice}
-                eloSelf={eloSelf}
-                setEloSelf={setEloSelf}
-                eloOpponent={eloOpponent}
-                setEloOpponent={setEloOpponent}
-                topK={topK}
-                setTopK={setTopK}
-                fen={fen}
-                modelInitialized={modelInitialized}
-                onInitialize={handleInitializeModel}
-                onPredict={handlePredict}
-                onReset={handleResetBoard}
-                onLoadFen={handleLoadFen}
-              />
+            {/* Chess Board */}
+            <Grid item xs={12}>
+              <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
+                <ChessBoard fen={fen} setFen={setFen} />
+              </Paper>
             </Grid>
 
-            {/* Main content */}
-            <Grid item xs={12} md={9}>
-              <Grid container spacing={3}>
-                {/* Chess Board */}
-                <Grid item xs={12}>
-                  <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
-                    <ChessBoard fen={fen} setFen={setFen} />
-                  </Paper>
-                </Grid>
-
-                {/* Results */}
-                <Grid item xs={12}>
-                  <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
-                    <Results predictions={predictions} />
-                  </Paper>
-                </Grid>
-              </Grid>
+            {/* Results */}
+            <Grid item xs={12}>
+              <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
+                <Results predictions={predictions} />
+              </Paper>
             </Grid>
           </Grid>
-        </Container>
+        </Grid>
+      </Grid>
+    </Container>
+  );
 
-        {/* Loading Backdrop */}
-        <Backdrop
-          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={loading}
-        >
-          <Box sx={{ textAlign: 'center' }}>
-            <CircularProgress color="inherit" size={60} />
-            <Box sx={{ mt: 2, fontSize: '1.2rem' }}>{loadingText}</Box>
-          </Box>
-        </Backdrop>
+  return (
+    <Router>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: '#f8f9fa' }}>
+          <Header />
+          <Routes>
+            <Route path="/" element={<MainContent />} />
+            <Route path="/config" element={<Config />} />
+          </Routes>
 
-        {/* Snackbar for notifications */}
-        <Snackbar
-          open={snackbar.open}
-          autoHideDuration={4000}
-          onClose={handleCloseSnackbar}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        >
-          <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
-            {snackbar.message}
-          </Alert>
-        </Snackbar>
-      </Box>
-    </ThemeProvider>
+          {/* Loading Backdrop */}
+          <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={loading}
+          >
+            <Box sx={{ textAlign: 'center' }}>
+              <CircularProgress color="inherit" size={60} />
+              <Box sx={{ mt: 2, fontSize: '1.2rem' }}>{loadingText}</Box>
+            </Box>
+          </Backdrop>
+
+          {/* Snackbar for notifications */}
+          <Snackbar
+            open={snackbar.open}
+            autoHideDuration={4000}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          >
+            <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+              {snackbar.message}
+            </Alert>
+          </Snackbar>
+        </Box>
+      </ThemeProvider>
+    </Router>
   );
 }
 

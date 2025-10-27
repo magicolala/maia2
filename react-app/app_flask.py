@@ -13,10 +13,12 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from maia2 import model, inference
+import yaml
 
 # Determine if we're in production (serving React build)
 REACT_BUILD_DIR = os.path.join(os.path.dirname(__file__), 'build')
 IS_PRODUCTION = os.path.exists(REACT_BUILD_DIR)
+CONFIG_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'maia2_models', 'config.yaml'))
 
 if IS_PRODUCTION:
     # Production: serve React build
@@ -179,6 +181,41 @@ def validate_fen():
             'valid': False,
             'message': f'FEN invalide: {str(e)}'
         })
+
+
+@app.route('/api/config', methods=['GET'])
+def get_config():
+    """Get the model configuration."""
+    try:
+        with open(CONFIG_PATH, 'r') as f:
+            config = yaml.safe_load(f)
+        return jsonify({
+            'success': True,
+            'config': config
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'Erreur lors de la lecture de la configuration: {str(e)}'
+        }), 500
+
+
+@app.route('/api/config', methods=['POST'])
+def set_config():
+    """Set the model configuration."""
+    try:
+        data = request.json
+        with open(CONFIG_PATH, 'w') as f:
+            yaml.dump(data['config'], f, default_flow_style=False)
+        return jsonify({
+            'success': True,
+            'message': 'Configuration mise à jour avec succès'
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'Erreur lors de la mise à jour de la configuration: {str(e)}'
+        }), 500
 
 
 # React Routes (Production only)
