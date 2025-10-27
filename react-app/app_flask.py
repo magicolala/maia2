@@ -53,7 +53,8 @@ def initialize_model():
         print(f"Initializing Maia2 model: type={model_type}, device={device}", flush=True)
         
         # Load the model
-        maia_model = model.from_pretrained(type=model_type, device=device)
+        save_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'maia2_models'))
+        maia_model = model.from_pretrained(type=model_type, device=device, save_root=save_root)
         prepared_data = inference.prepare()
         
         model_config['type'] = model_type

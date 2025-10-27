@@ -4,194 +4,280 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maia2 - Interface de Test</title>
-    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                DEFAULT: '#6366F1',
+                dark: '#4338CA',
+                light: '#A5B4FC',
+              },
+              secondary: '#22D3EE',
+              accent: '#F97316',
+              success: '#22C55E',
+              warning: '#FACC15',
+              error: '#EF4444',
+              'text-primary': '#F1F5F9',
+              'text-secondary': '#B4C6F0',
+              'text-muted': '#94A3B8',
+              'border-color': 'rgba(148, 163, 184, 0.25)',
+              background: '#0F172A',
+              surface: 'rgba(15, 23, 42, 0.75)',
+              'surface-strong': 'rgba(15, 23, 42, 0.9)',
+            },
+            boxShadow: {
+              glow: '0 20px 45px rgba(99, 102, 241, 0.35)',
+              floating: '0 18px 65px rgba(15, 23, 42, 0.55)',
+              'inner-card': 'inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+            },
+            fontFamily: {
+              sans: ['"Roboto"', 'sans-serif'],
+            },
+          }
+        }
+      }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
 </head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">
-                <span class="material-icons">psychology</span>
-                <h1>Maia2</h1>
+<body class="relative min-h-screen overflow-x-hidden bg-background text-text-primary">
+    <div class="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-primary/30 blur-[160px]"></div>
+    <div class="pointer-events-none absolute bottom-[-180px] right-[-120px] h-[480px] w-[480px] rounded-full bg-secondary/20 blur-[160px]"></div>
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.15),transparent_55%)]"></div>
+
+    <div class="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-8 md:px-10 lg:px-16">
+        <div class="w-full max-w-6xl 2xl:max-w-7xl">
+            <div class="overflow-hidden rounded-lg border border-white/10 bg-surface shadow-floating backdrop-blur-2xl">
+                <div class="flex flex-wrap items-center justify-between gap-6 border-b border-white/10 bg-surface-strong px-6 py-5 sm:flex-nowrap sm:px-10">
+                    <div class="flex items-center gap-6">
+                        <div class="flex items-center gap-2">
+                            <span class="block h-3 w-3 rounded-full bg-[#FB5F57] shadow-[0_0_18px_rgba(251,95,87,0.6)]"></span>
+                            <span class="block h-3 w-3 rounded-full bg-[#FEBB2E] shadow-[0_0_18px_rgba(254,187,46,0.55)]"></span>
+                            <span class="block h-3 w-3 rounded-full bg-[#2BC840] shadow-[0_0_18px_rgba(43,200,64,0.45)]"></span>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-3">
+                                <span class="material-icons text-4xl text-primary-light drop-shadow-[0_0_25px_rgba(99,102,241,0.45)]">psychology</span>
+                                <h1 class="text-3xl font-semibold tracking-tight text-white">Maia<span class="text-primary-light">&sup2;</span></h1>
+                            </div>
+                            <p class="mt-1 text-sm font-light text-text-secondary">ModÃ¨le UnifiÃ© pour l'Alignement Humain-IA aux Ã‰checs</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium uppercase tracking-[0.35em] text-text-secondary">
+                        <span class="material-icons text-base text-primary-light">important_devices</span>
+                        Mode Laboratoire
+                    </div>
+                </div>
+
+                <div class="grid gap-8 px-5 py-8 lg:grid-cols-[360px_1fr] lg:px-10 lg:py-10">
+                    <aside class="space-y-6">
+                        <div class="rounded-lg border border-white/10 bg-white/5 p-6 shadow-inner-card backdrop-blur-xl">
+                            <div class="flex items-center justify-between">
+                                <h2 class="flex items-center gap-3 text-xl font-semibold text-white">
+                                    <span class="material-icons text-primary-light">settings</span>
+                                    Configuration
+                                </h2>
+                                <span class="rounded-full bg-primary/20 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary-light">Session</span>
+                            </div>
+
+                            <div class="mt-6 space-y-6">
+                                <section>
+                                    <h3 class="text-xs font-semibold uppercase tracking-[0.3em] text-text-muted">ModÃ¨le</h3>
+                                    <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                                        <label class="block">
+                                            <input type="radio" name="model-type" value="rapid" class="peer hidden" checked>
+                                            <div class="flex h-24 flex-col justify-between rounded-lg border border-white/10 bg-white/5 px-4 py-3 transition duration-300 peer-checked:border-primary-light peer-checked:bg-primary/20 peer-checked:shadow-glow hover:-translate-y-0.5 hover:border-primary-light/70 hover:bg-primary/15">
+                                                <span class="text-xs font-medium uppercase tracking-[0.25em] text-text-muted">Profil</span>
+                                                <span class="text-2xl font-semibold text-white peer-checked:text-primary-light">Rapid</span>
+                                                <span class="text-xs text-text-secondary">EntraÃ®nement jusqu'Ã  1700 ELO</span>
+                                            </div>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="model-type" value="blitz" class="peer hidden">
+                                            <div class="flex h-24 flex-col justify-between rounded-lg border border-white/10 bg-white/5 px-4 py-3 transition duration-300 peer-checked:border-primary-light peer-checked:bg-primary/20 peer-checked:shadow-glow hover:-translate-y-0.5 hover:border-primary-light/70 hover:bg-primary/15">
+                                                <span class="text-xs font-medium uppercase tracking-[0.25em] text-text-muted">Profil</span>
+                                                <span class="text-2xl font-semibold text-white peer-checked:text-primary-light">Blitz</span>
+                                                <span class="text-xs text-text-secondary">EntraÃ®nement intensif 2000+</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </section>
+
+                                <section>
+                                    <h3 class="text-xs font-semibold uppercase tracking-[0.3em] text-text-muted">Dispositif</h3>
+                                    <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                                        <label class="block">
+                                            <input type="radio" name="device" value="cpu" class="peer hidden" checked>
+                                            <div class="flex h-20 flex-col justify-between rounded-lg border border-white/10 bg-white/5 px-4 py-3 transition duration-300 peer-checked:border-secondary peer-checked:bg-secondary/15 peer-checked:shadow-glow hover:-translate-y-0.5 hover:border-secondary/70 hover:bg-secondary/10">
+                                                <span class="text-xs font-medium uppercase tracking-[0.25em] text-text-muted">Device</span>
+                                                <span class="text-lg font-semibold text-white peer-checked:text-secondary">CPU</span>
+                                                <span class="text-xs text-text-secondary">CompatibilitÃ© universelle</span>
+                                            </div>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="device" value="gpu" class="peer hidden">
+                                            <div class="flex h-20 flex-col justify-between rounded-lg border border-white/10 bg-white/5 px-4 py-3 transition duration-300 peer-checked:border-secondary peer-checked:bg-secondary/15 peer-checked:shadow-glow hover:-translate-y-0.5 hover:border-secondary/70 hover:bg-secondary/10">
+                                                <span class="text-xs font-medium uppercase tracking-[0.25em] text-text-muted">Device</span>
+                                                <span class="text-lg font-semibold text-white peer-checked:text-secondary">GPU</span>
+                                                <span class="text-xs text-text-secondary">Performances optimales</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </section>
+
+                                <section class="grid gap-4">
+                                    <div>
+                                        <h3 class="text-xs font-semibold uppercase tracking-[0.3em] text-text-muted">Joueur Actif</h3>
+                                        <div class="mt-3 space-y-2">
+                                            <label for="elo-self" class="text-sm font-medium text-text-secondary">ELO du joueur actif</label>
+                                            <input type="number" id="elo-self" value="1500" min="800" max="2800" step="50" class="w-full rounded-lg border border-white/10 bg-white/10 px-4 py-3 text-base text-white shadow-inner-card transition focus:border-primary-light focus:outline-none focus:ring-2 focus:ring-primary/40" />
+                                            <span class="text-xs text-text-muted">Plage recommandÃ©e&nbsp;: 800 - 2800</span>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h3 class="text-xs font-semibold uppercase tracking-[0.3em] text-text-muted">Adversaire</h3>
+                                        <div class="mt-3 space-y-2">
+                                            <label for="elo-opponent" class="text-sm font-medium text-text-secondary">ELO de l'adversaire</label>
+                                            <input type="number" id="elo-opponent" value="1500" min="800" max="2800" step="50" class="w-full rounded-lg border border-white/10 bg-white/10 px-4 py-3 text-base text-white shadow-inner-card transition focus:border-primary-light focus:outline-none focus:ring-2 focus:ring-primary/40" />
+                                            <span class="text-xs text-text-muted">Plage recommandÃ©e&nbsp;: 800 - 2800</span>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section>
+                                    <h3 class="text-xs font-semibold uppercase tracking-[0.3em] text-text-muted">Position (FEN)</h3>
+                                    <div class="mt-3 space-y-3">
+                                        <textarea id="fen-input" placeholder="Entrez une position FEN..." class="min-h-[100px] w-full rounded-lg border border-white/10 bg-white/10 px-4 py-3 font-mono text-sm text-white shadow-inner-card transition focus:border-primary-light focus:outline-none focus:ring-2 focus:ring-primary/40">rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1</textarea>
+                                        <button id="load-fen-btn" class="flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:-translate-y-0.5 hover:border-primary-light hover:bg-primary/15">
+                                            <span class="material-icons text-primary-light">upload</span>
+                                            Charger la position
+                                        </button>
+                                    </div>
+                                </section>
+
+                                <section>
+                                    <h3 class="text-xs font-semibold uppercase tracking-[0.3em] text-text-muted">Suggestions</h3>
+                                    <div class="mt-3 space-y-2">
+                                        <label for="top-k" class="text-sm font-medium text-text-secondary">Nombre de coups suggÃ©rÃ©s</label>
+                                        <input type="number" id="top-k" value="5" min="1" max="10" step="1" class="w-full rounded-lg border border-white/10 bg-white/10 px-4 py-3 text-base text-white shadow-inner-card transition focus:border-primary-light focus:outline-none focus:ring-2 focus:ring-primary/40" />
+                                    </div>
+                                </section>
+
+                                <section class="space-y-3">
+                                    <button id="init-model-btn" class="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary via-primary-light to-secondary px-6 py-3 text-sm font-semibold text-white shadow-glow transition duration-300 hover:shadow-[0_25px_55px_rgba(99,102,241,0.55)] active:scale-[0.99] disabled:from-white/10 disabled:via-white/10 disabled:to-white/10 disabled:text-text-muted disabled:shadow-none">
+                                        <span class="material-icons">play_arrow</span>
+                                        Initialiser le modÃ¨le
+                                    </button>
+                                    <button id="predict-btn" disabled class="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-secondary to-primary px-6 py-3 text-sm font-semibold text-white shadow-glow transition duration-300 hover:shadow-[0_25px_55px_rgba(34,211,238,0.4)] active:scale-[0.99] disabled:from-white/10 disabled:to-white/10 disabled:text-text-muted disabled:shadow-none">
+                                        <span class="material-icons">psychology</span>
+                                        PrÃ©dire
+                                    </button>
+                                    <button id="reset-board-btn" class="flex w-full items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:border-error/50 hover:bg-error/10">
+                                        <span class="material-icons text-error">refresh</span>
+                                        RÃ©initialiser
+                                    </button>
+                                </section>
+                            </div>
+
+                            <div class="mt-6 rounded-lg border border-white/10 bg-white/5 p-4 shadow-inner-card" id="status-section">
+                                <div class="flex items-center gap-3">
+                                    <span id="status-dot" class="h-3 w-3 rounded-full bg-border-color shadow-[0_0_12px_rgba(148,163,184,0.4)] animate-pulse"></span>
+                                    <div>
+                                        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-text-muted">Statut du modÃ¨le</p>
+                                        <p id="status-text" class="text-sm font-medium text-text-secondary">Non initialisÃ©</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <main class="flex flex-col gap-6">
+                        <section class="rounded-lg border border-white/10 bg-white/5 p-6 shadow-inner-card backdrop-blur-xl lg:p-8">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-icons text-primary-light">grid_on</span>
+                                    <h2 class="text-xl font-semibold text-white">Ã‰chiquier</h2>
+                                </div>
+                                <div class="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs text-text-secondary">
+                                    Visualisation en temps rÃ©el
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <div id="chess-board" class="rounded-lg border border-white/10 bg-background/60 p-4 shadow-inner-card"></div>
+                                <div class="mt-4 flex justify-center">
+                                    <div class="flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm font-medium">
+                                        <span class="material-icons text-primary-light text-xl">info</span>
+                                        <span id="turn-indicator">Tour: Blancs</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="rounded-lg border border-white/10 bg-white/5 p-6 shadow-inner-card backdrop-blur-xl lg:p-8">
+                            <div class="flex items-center gap-3">
+                                <span class="material-icons text-primary-light">analytics</span>
+                                <h2 class="text-xl font-semibold text-white">RÃ©sultats de prÃ©diction</h2>
+                            </div>
+
+                            <div id="results-content" class="mt-8 min-h-[200px] rounded-lg border border-dashed border-white/10 bg-white/5 p-10 text-center">
+                                <div class="flex flex-col items-center gap-4 text-text-secondary">
+                                    <span class="material-icons text-6xl text-white/15">query_stats</span>
+                                    <p>Aucune prÃ©diction pour le moment</p>
+                                    <p class="text-xs text-text-muted">Configurez les paramÃ¨tres et cliquez sur &laquo;&nbsp;PrÃ©dire&nbsp;&raquo;.</p>
+                                </div>
+                            </div>
+
+                            <div id="win-probability" style="display: none;" class="mt-8">
+                                <h3 class="text-base font-medium text-white">ProbabilitÃ© de gain</h3>
+                                <div class="relative mt-3 h-12 overflow-hidden rounded-full border border-white/10 bg-background/60">
+                                    <div id="probability-fill" class="h-full rounded-full bg-gradient-to-r from-secondary via-primary to-primary-light transition-all duration-500 ease-out" style="width: 50%;"></div>
+                                    <span id="probability-text" class="absolute inset-0 flex items-center justify-center text-lg font-bold text-white">50%</span>
+                                </div>
+                            </div>
+
+                            <div id="next-move-probability" style="display: none;" class="mt-8">
+                                <h3 class="text-base font-medium text-white">ProbabilitÃ© du prochain coup</h3>
+                                <div class="relative mt-3 h-12 overflow-hidden rounded-full border border-white/10 bg-background/60">
+                                    <div id="next-move-probability-fill" class="h-full rounded-full bg-gradient-to-r from-accent via-secondary to-primary-light transition-all duration-500 ease-out"></div>
+                                    <span id="next-move-probability-text" class="absolute inset-0 flex items-center justify-center text-lg font-bold text-white"></span>
+                                </div>
+                                <div id="next-move-text" class="mt-3 text-center text-sm font-medium text-text-secondary"></div>
+                            </div>
+
+                            <div id="move-suggestions" style="display: none;" class="mt-8">
+                                <h3 class="text-base font-medium text-white">Coups suggÃ©rÃ©s</h3>
+                                <div id="suggestions-list" class="mt-4 flex flex-col gap-3"></div>
+                            </div>
+                        </section>
+                    </main>
+                </div>
             </div>
-            <div class="subtitle">Modèle Unifié pour l'Alignement Humain-IA aux Échecs</div>
         </div>
-    </header>
-
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Sidebar Configuration -->
-        <aside class="sidebar card">
-            <h2 class="section-title">
-                <span class="material-icons">settings</span>
-                Configuration
-            </h2>
-            
-            <!-- Model Selection -->
-            <div class="config-section">
-                <h3>Modèle</h3>
-                <div class="radio-group">
-                    <label class="radio-label">
-                        <input type="radio" name="model-type" value="rapid" checked>
-                        <span>Rapid</span>
-                    </label>
-                    <label class="radio-label">
-                        <input type="radio" name="model-type" value="blitz">
-                        <span>Blitz</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Device Selection -->
-            <div class="config-section">
-                <h3>Dispositif</h3>
-                <div class="radio-group">
-                    <label class="radio-label">
-                        <input type="radio" name="device" value="cpu" checked>
-                        <span>CPU</span>
-                    </label>
-                    <label class="radio-label">
-                        <input type="radio" name="device" value="gpu">
-                        <span>GPU</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- ELO Settings -->
-            <div class="config-section">
-                <h3>Joueur Actif</h3>
-                <div class="input-group">
-                    <label for="elo-self">ELO du joueur actif</label>
-                    <input type="number" id="elo-self" value="1500" min="800" max="2800" step="50">
-                    <span class="input-hint">800 - 2800</span>
-                </div>
-            </div>
-
-            <div class="config-section">
-                <h3>Adversaire</h3>
-                <div class="input-group">
-                    <label for="elo-opponent">ELO de l'adversaire</label>
-                    <input type="number" id="elo-opponent" value="1500" min="800" max="2800" step="50">
-                    <span class="input-hint">800 - 2800</span>
-                </div>
-            </div>
-
-            <!-- FEN Input -->
-            <div class="config-section">
-                <h3>Position (FEN)</h3>
-                <div class="input-group">
-                    <textarea id="fen-input" placeholder="Entrez une position FEN...">rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1</textarea>
-                    <button class="btn-secondary" id="load-fen-btn">
-                        <span class="material-icons">upload</span>
-                        Charger Position
-                    </button>
-                </div>
-            </div>
-
-            <!-- Top K Settings -->
-            <div class="config-section">
-                <h3>Suggestions</h3>
-                <div class="input-group">
-                    <label for="top-k">Nombre de coups suggérés</label>
-                    <input type="number" id="top-k" value="5" min="1" max="10" step="1">
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="button-group">
-                <button class="btn-primary" id="init-model-btn">
-                    <span class="material-icons">play_arrow</span>
-                    Initialiser le Modèle
-                </button>
-                <button class="btn-primary" id="predict-btn" disabled>
-                    <span class="material-icons">psychology</span>
-                    Prédire
-                </button>
-                <button class="btn-secondary" id="reset-board-btn">
-                    <span class="material-icons">refresh</span>
-                    Réinitialiser
-                </button>
-            </div>
-
-            <!-- Status -->
-            <div class="status-section" id="status-section">
-                <div class="status-indicator">
-                    <span class="status-dot" id="status-dot"></span>
-                    <span id="status-text">Non initialisé</span>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Chess Board Section -->
-            <section class="card board-section">
-                <h2 class="section-title">
-                    <span class="material-icons">grid_on</span>
-                    Échiquier
-                </h2>
-                <div id="chess-board" class="chess-board">
-                    <!-- The board will be generated by JavaScript -->
-                </div>
-                <div class="board-info">
-                    <div class="info-item">
-                        <span class="material-icons">info</span>
-                        <span id="turn-indicator">Tour: Blancs</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Results Section -->
-            <section class="card results-section">
-                <h2 class="section-title">
-                    <span class="material-icons">analytics</span>
-                    Résultats de Prédiction
-                </h2>
-                
-                <div class="results-content" id="results-content">
-                    <div class="empty-state">
-                        <span class="material-icons">query_stats</span>
-                        <p>Aucune prédiction pour le moment</p>
-                        <p class="empty-state-hint">Configurez les paramètres et cliquez sur "Prédire"</p>
-                    </div>
-                </div>
-
-                <!-- Win Probability -->
-                <div class="win-probability" id="win-probability" style="display: none;">
-                    <h3>Probabilité de Gain</h3>
-                    <div class="probability-bar">
-                        <div class="probability-fill" id="probability-fill"></div>
-                        <span class="probability-text" id="probability-text">50%</span>
-                    </div>
-                </div>
-
-                <!-- Move Suggestions -->
-                <div class="move-suggestions" id="move-suggestions" style="display: none;">
-                    <h3>Coups Suggérés</h3>
-                    <div class="suggestions-list" id="suggestions-list">
-                        <!-- Suggestions will be inserted here -->
-                    </div>
-                </div>
-            </section>
-        </main>
     </div>
 
-    <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loading-overlay">
-        <div class="spinner"></div>
-        <p id="loading-text">Chargement...</p>
+    <div id="loading-overlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-background/80 backdrop-blur-xl">
+        <div class="flex flex-col items-center gap-5 rounded-lg border border-white/10 bg-surface-strong px-12 py-10 shadow-floating">
+            <div class="h-16 w-16 animate-spin rounded-full border-4 border-white/10 border-t-secondary"></div>
+            <p id="loading-text" class="text-base font-medium text-text-secondary">Chargement...</p>
+        </div>
     </div>
 
-    <!-- Toast Notifications -->
-    <div class="toast" id="toast">
-        <span class="material-icons" id="toast-icon">info</span>
+    <div id="toast" class="fixed bottom-8 left-1/2 z-50 flex -translate-x-1/2 translate-y-[200%] items-center gap-3 rounded-lg border border-white/10 bg-surface-strong px-6 py-4 text-sm text-text-primary shadow-floating backdrop-blur-xl transition-transform duration-300">
+        <span id="toast-icon" class="material-icons text-primary-light">info</span>
         <span id="toast-message"></span>
     </div>
 
     <script type="module" src="./neochess/index.js"></script>
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
 

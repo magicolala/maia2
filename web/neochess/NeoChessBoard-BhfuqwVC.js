@@ -1,4 +1,4 @@
-import { Chess, SQUARES } from "chess.js";
+import { Chess, SQUARES } from "https://esm.sh/chess.js";
 const THEMES = {
   classic: {
     light: "#2a3547",
